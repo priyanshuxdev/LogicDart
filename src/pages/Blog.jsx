@@ -70,7 +70,7 @@ export const Blog = () => {
         </div>
         <div className="w-full mb-6">
           <h1 className="font-lato text-gradient font-extrabold text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-0 w-full sm:w-1/2">
-            {blog.title}
+          {blog.title}
           </h1>
         </div>
         <div className="browser-css text-slate-300">{parse(blog.content)}</div>
