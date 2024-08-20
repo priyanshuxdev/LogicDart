@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+@layer components {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400;
+  }
+
+  .btn_style {
+    @apply bg-gradient rounded-lg text-black text-sm px-4 py-[6px] font-medium hover:opacity-90 duration-300 transition-all;
+  }
+
+  .bg-gradient {
+    @apply bg-gradient-to-b from-neutral-50 to-neutral-400;
+  }
+}
+
+@font-face {
+  font-family: "vanguard_extrabold";
+  src: url("/fonts/vanguard-extrabold.otf");
+}
+
+@font-face {
+  font-family: "vanguard_bold";
+  src: url("/fonts/vanguard-bold.otf");
+}
+
+@font-face {
+  font-family: "vanguard_regular";
+  src: url("/fonts/vanguard-regular.otf");
+}
+
+@font-face {
+  font-family: "vanguard_medium";
+  src: url("/fonts/vanguard-medium.otf");
+}
+
+.font-vanguard-bold {
+  font-family: "vanguard_bold";
+}
+
+.font-vanguard {
+  font-family: "vanguard_extrabold";
+}
+
+.font-vanguard-regular {
+  font-family: "vanguard_regular";
+}
+
+.font-vanguard-medium {
+  font-family: "vanguard_medium";
+}
+
+.font-lato {
+  font-family: "Lato", sans-serif;
+}
+
+.font-openSans {
+  font-family: "Open Sans", sans-serif;
+}
+
+.gradient-01 {
+  background-image: linear-gradient(
+    270deg,
+    hsl(295deg 76% 51%) 0%,
+    hsl(284deg 70% 73%) 26%,
+    hsl(257deg 70% 86%) 39%,
+    hsl(202deg 92% 90%) 50%,
+    hsl(215deg 77% 81%) 61%,
+    hsl(221deg 73% 70%) 74%,
+    hsl(220deg 76% 51%) 100%
+  );
+  filter: blur(125px);
+}
