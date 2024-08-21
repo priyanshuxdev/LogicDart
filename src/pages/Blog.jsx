@@ -5,6 +5,7 @@ import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 import { CiMenuKebab } from "react-icons/ci";
+import "ldrs/spiral";
 
 export const Blog = () => {
   const [blog, setBlog] = useState(null);
@@ -39,7 +40,7 @@ export const Blog = () => {
       <Container>
         <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
           <img
-            src={dbService.getFilePreview(blog.featuredImage)}
+            src={dbService.getFilePreview(blog?.featuredImage)}
             alt={blog.title}
             className="w-full h-56 sm:h-64 md:h-80 object-cover rounded-lg"
           />
@@ -63,18 +64,24 @@ export const Blog = () => {
                   </Button>
                 </div>
               )}
-
               <CiMenuKebab />
             </div>
           )}
         </div>
-        <div className="w-full mb-6">
+        <div className="w-full mb-6 flex max-sm:flex-col align-center sm:justify-between">
           <h1 className="font-lato text-gradient font-extrabold text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-0 w-full sm:w-1/2">
-          {blog.title}
+            {blog?.title}
           </h1>
+          <p className="text-lg text-secondary-white font-lato italic rounded-md">
+            Published by -<span className="font-bold">{userData?.name}</span>
+          </p>
         </div>
-        <div className="browser-css text-slate-300">{parse(blog.content)}</div>
+        <div className="browser-css text-slate-300">{parse(blog?.content)}</div>
       </Container>
     </div>
-  ) : null;
+  ) : (
+    <div className="flex align-center justify-center mt-32">
+      <l-spiral color="white" speed="0.9" size="60"></l-spiral>
+    </div>
+  );
 };

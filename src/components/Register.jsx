@@ -27,8 +27,8 @@ export const Register = () => {
         navigate("/");
       }
     } catch (error) {
-      setError(error.message);
       toast.error(error.message);
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }

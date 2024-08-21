@@ -1,13 +1,26 @@
 import React, { useState } from "react";
 import { Button, LogOutBtn } from "./index";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/slices/authSlice";
+import { authService } from "../appwrite/authService";
 import { useSelector } from "react-redux";
 import { Sling as Hamburger } from "hamburger-react";
+import toast, { Toaster } from "react-hot-toast";
 
 const HomeNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logOutHandler = () => {
+    authService.logout().then(() => {
+      dispatch(logout());
+      toast.success("Logged out successfully");
+    });
+  };
+
   const navItems = [
     {
       name: "Home",
@@ -38,6 +51,7 @@ const HomeNav = () => {
 
   return (
     <>
+      <Toaster position="top-center" />
       <div
         className={`fixed top-0 right-0 bg-black/85 h-60 w-60 flex flex-col justify-center align-center mx-auto text-center gap-3 rounded-lg sm:hidden transform transition-transform border-b border-secondary-white duration-500 mt-3 z-10 ${
           isOpen === false ? "translate-x-full -translate-y-full" : ""
@@ -57,7 +71,7 @@ const HomeNav = () => {
         )}
         {authStatus && (
           <span>
-            <LogOutBtn />
+            <LogOutBtn logOut={logOutHandler} />
           </span>
         )}
       </div>

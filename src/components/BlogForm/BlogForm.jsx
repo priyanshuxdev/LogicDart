@@ -15,7 +15,7 @@ export const BlogForm = ({ blogPost }) => {
         title: blogPost?.title || "",
         content: blogPost?.content || "",
         slug: blogPost?.$id || "",
-        status: blogPost?.status || "Active",
+        status: blogPost?.status || "active",
       },
     });
 
@@ -33,7 +33,6 @@ export const BlogForm = ({ blogPost }) => {
         ...data,
         featuredImage: file ? file.$id : undefined,
       });
-
       if (dbBlogPost) {
         toast.success("Blog updated successfully");
         navigate(`/blog/${blogPost.$id}`);
@@ -42,7 +41,7 @@ export const BlogForm = ({ blogPost }) => {
       const file = await dbService.uploadFile(data.image[0]);
 
       if (file) {
-        toast.success("Image uploaded successfully");
+        toast.success("File uploaded successfully");
         const fileId = file.$id;
         data.featuredImage = fileId;
         const dbBlogPost = await dbService.createBlogPost({
@@ -82,66 +81,69 @@ export const BlogForm = ({ blogPost }) => {
   }, [watch, setValue, slugTransform]);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-wrap px-1 sm:px-16"
-    >
+    <>
       <Toaster position="top-center" />
-      <div className="w-full sm:w-2/3 px-2 text-secondary-white font-openSans">
-        <Input
-          label="Title"
-          placeholder="Title"
-          className="mb-4"
-          {...register("title", { required: true })}
-        />
-        <Input
-          label="Slug"
-          placeholder="Slug"
-          className="mb-4"
-          {...register("slug", { required: true })}
-          onInput={(e) => {
-            setValue("slug", slugTransform(e.target.value), {
-              shouldValidate: true,
-            });
-          }}
-        />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-wrap px-1 sm:px-16"
+      >
+        <div className="w-full sm:w-2/3 px-2 text-secondary-white font-openSans">
+          <Input
+            label="Title"
+            placeholder="Title"
+            className="mb-4"
+            {...register("title", { required: true })}
+          />
+          <Input
+            label="Slug"
+            placeholder="Slug"
+            className="mb-4"
+            disabled={true}
+            {...register("slug", { required: true })}
+            onInput={(e) => {
+              setValue("slug", slugTransform(e.target.value), {
+                shouldValidate: true,
+              });
+            }}
+          />
 
-        <RTE
-          label="Content"
-          content="content"
-          control={control}
-          defaultValue={getValues("content")}
-        />
-      </div>
+          <RTE
+            label="Content"
+            content="content"
+            control={control}
+            defaultValue={getValues("content")}
+          />
+        </div>
 
-      <div className="w-full sm:w-1/3 px-2">
-        <Input
-          label="Featured Image"
-          type="file"
-          className="mb-4"
-          accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { required: !blogPost })}
-        />
-        {blogPost && (
-          <div className="w-full mb-4">
-            <img
-              src={dbService.getFilePreview(blogPost.featuredImage)}
-              alt={blogPost.title}
-              className="rounded-lg"
-            />
-          </div>
-        )}
-        <Select
-          label="Status"
-          options={["Active", "Inactive"]}
-          className="mb-4"
-          {...register("status", { required: true })}
-        />
+        <div className="w-full sm:w-1/3 px-2 max-sm:mt-5">
+          <Input
+            label="Featured Image"
+            type="file"
+            className="mb-4"
+            accept="image/png, image/jpg, image/jpeg, image/gif"
+            {...register("image", { required: !blogPost })}
+          />
+          {blogPost && (
+            <div className="w-full mb-4">
+              <img
+                src={dbService.getFilePreview(blogPost.featuredImage)}
+                alt={blogPost.title}
+                className="rounded-lg"
+              />
+            </div>
+          )}
+          <Select
+            label="Status"
+            options={["active", "inactive"]}
+            className="mb-4"
+            {...register("status", { required: true })}
+          />
 
-        <Button type="submit" className={`w-full btn_style `}>
-          {blogPost ? "Update" : "Submit"}
-        </Button>
-      </div>
-    </form>
+          <Button type="submit" className="w-full btn_style">
+            {blogPost ? "Update" : "Submit"}
+          </Button>
+        </div>
+      </form>
+    </>
   );
 };

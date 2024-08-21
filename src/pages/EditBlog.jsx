@@ -23,7 +23,7 @@ export const EditBlog = () => {
   return blog ? (
     <div>
       <Container>
-        <BlogForm blog={blog} />
+        <BlogForm blogPost={blog} />
       </Container>
     </div>
   ) : null;
