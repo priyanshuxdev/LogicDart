@@ -22,7 +22,7 @@ export const Home = () => {
           <h1 className="font-vanguard text-[80px] sm:text-[144px] tracking-wide text-gradient leading-[64.2px] uppercase p-3 sm:p-10">
             Logicdart
           </h1>
-          <h2 className="font-vanguard tracking-wide text-[23px] sm:text-[40px] sm:leading-[74.4px] leading-[64.4px] uppercase text-neutral-300 mb-4 sm:mb-7">
+          <h2 className="font-vanguard tracking-wide text-[23px] sm:text-[40px] sm:leading-[74.4px] leading-[64.4px] uppercase text-neutral-300 mb-2 sm:mb-7">
             Darting Through the Maze of Ideas
           </h2>
           <div>
