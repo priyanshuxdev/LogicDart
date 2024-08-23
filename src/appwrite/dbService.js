@@ -15,6 +15,7 @@ class DBService {
   }
 
   async createBlogPost({
+    author,
     title,
     slug,
     featuredImage,
@@ -28,6 +29,7 @@ class DBService {
         config.appwriteCollectionId,
         ID.unique(),
         {
+          author,
           title,
           featuredImage,
           content,
@@ -40,13 +42,17 @@ class DBService {
     }
   }
 
-  async updateBlogPost(slug, { title, featuredImage, content, status }) {
+  async updateBlogPost(
+    slug,
+    { author, title, featuredImage, content, status }
+  ) {
     try {
       return await this.databases.updateDocument(
         config.appwriteDatabaseId,
         config.appwriteCollectionId,
         slug,
         {
+          author,
           title,
           featuredImage,
           content,
@@ -93,6 +99,18 @@ class DBService {
       );
     } catch (error) {
       console.log("Appwrite Service Error :: getBlogPostsError", error);
+    }
+  }
+
+  async getUserById(userId) {
+    try {
+      return await this.databases.getDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCollectionId,
+        userId
+      );
+    } catch (error) {
+      console.log("Appwrite Service Error :: getUserByIdError", error);
     }
   }
 

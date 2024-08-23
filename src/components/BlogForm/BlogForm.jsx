@@ -12,6 +12,7 @@ export const BlogForm = ({ blogPost }) => {
   const { register, handleSubmit, watch, setValue, control, getValues } =
     useForm({
       defaultValues: {
+        author: blogPost?.author || "",
         title: blogPost?.title || "",
         content: blogPost?.content || "",
         slug: blogPost?.$id || "",
@@ -31,27 +32,31 @@ export const BlogForm = ({ blogPost }) => {
 
       const dbBlogPost = await dbService.updateBlogPost(blogPost.$id, {
         ...data,
-        featuredImage: file ? file.$id : undefined,
+        featuredImage: file ? file.$id : blogPost.featuredImage,
       });
       if (dbBlogPost) {
         toast.success("Blog updated successfully");
-        navigate(`/blog/${blogPost.$id}`);
+        navigate(`/blog/${dbBlogPost.$id}`);
       }
     } else {
       const file = await dbService.uploadFile(data.image[0]);
-
       if (file) {
-        toast.success("File uploaded successfully");
+        // toast.success("File uploaded successfully");
         const fileId = file.$id;
         data.featuredImage = fileId;
-        const dbBlogPost = await dbService.createBlogPost({
-          ...data,
-          userId: userData.$id,
-        });
 
-        if (dbBlogPost) {
-          toast.success("Blog created successfully");
-          navigate(`/blog/${blogPost.$id}`);
+        if (userData && userData.$id) {
+          const dbBlogPost = await dbService.createBlogPost({
+            ...data,
+            userId: userData.$id,
+          });
+
+          if (dbBlogPost) {
+            toast.success("Blog created successfully");
+            navigate(`/blog/${dbBlogPost.$id}`);
+          }
+        } else {
+          toast.error("User data is not available. Please log in again.");
         }
       }
     }
@@ -62,7 +67,7 @@ export const BlogForm = ({ blogPost }) => {
       return value
         .trim()
         .toLowerCase()
-        .replace(/^[a-zA-z/d/s]+/g, "-")
+        .replace(/[^a-zA-Z\d\s]+/g, "-")
         .replace(/\s/g, "-");
 
     return "";
@@ -75,9 +80,7 @@ export const BlogForm = ({ blogPost }) => {
       }
     });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, [watch, setValue, slugTransform]);
 
   return (
@@ -88,6 +91,12 @@ export const BlogForm = ({ blogPost }) => {
         className="flex flex-wrap px-1 sm:px-16"
       >
         <div className="w-full sm:w-2/3 px-2 text-secondary-white font-openSans">
+          <Input
+            label="Author"
+            placeholder="Author"
+            className="mb-4"
+            {...register("author", { required: true })}
+          />
           <Input
             label="Title"
             placeholder="Title"
@@ -101,7 +110,7 @@ export const BlogForm = ({ blogPost }) => {
             disabled={true}
             {...register("slug", { required: true })}
             onInput={(e) => {
-              setValue("slug", slugTransform(e.target.value), {
+              setValue("slug", slugTransform(e.currentTarget.value), {
                 shouldValidate: true,
               });
             }}
@@ -119,7 +128,7 @@ export const BlogForm = ({ blogPost }) => {
           <Input
             label="Featured Image"
             type="file"
-            className="mb-4"
+            className="mb-4 cursor-pointer placeholder:text-white text-white"
             accept="image/png, image/jpg, image/jpeg, image/gif"
             {...register("image", { required: !blogPost })}
           />

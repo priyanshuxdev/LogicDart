@@ -60,12 +60,12 @@ const HomeNav = () => {
         {navItems.map((item) =>
           item.isActive ? (
             <p key={item.name}>
-              <p
+              <span
                 onClick={() => navigate(item.slug)}
                 className="text-xl font-lato text-white cursor-pointer hover:underline hover:font-semibold hover:scale-100 transition-all duration-300"
               >
                 {item.name}
-              </p>
+              </span>
             </p>
           ) : null
         )}
@@ -92,7 +92,7 @@ const HomeNav = () => {
           )}
           {authStatus && (
             <li>
-              <LogOutBtn />
+              <LogOutBtn logOut={logOutHandler} />
             </li>
           )}
         </ul>

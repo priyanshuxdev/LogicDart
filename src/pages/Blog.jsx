@@ -12,16 +12,21 @@ export const Blog = () => {
   const [options, setOptions] = useState(false);
   const { slug } = useParams();
   const navigate = useNavigate();
+  // console.log("slug", slug, blog?.userId);
+  // console.log(blog);
 
   const userData = useSelector((state) => state.auth.userData);
-
-  const isAuthor = blog && userData ? blog.userId === userData.$id : false;
+  // console.log(userData);
+  const isAuthor = blog && userData ? blog?.userId === userData?.$id : false;
+  // console.log("userId", blog, userData);
 
   useEffect(() => {
     if (slug) {
       dbService.getBlogPost(slug).then((blog) => {
-        if (blog) setBlog(blog);
-        else navigate("/"); //404 page
+        if (blog) {
+          // console.log(blog);
+          setBlog(blog);
+        } else navigate("/"); //404 page
       });
     } else navigate("/"); //404 page
   }, [slug, navigate]);
@@ -30,7 +35,7 @@ export const Blog = () => {
     dbService.deleteBlogPost(blog.$id).then((status) => {
       if (status) {
         dbService.deleteFile(blog.featuredImage);
-        navigate("/");
+        navigate("/all-blog");
       }
     });
   };
@@ -73,7 +78,7 @@ export const Blog = () => {
             {blog?.title}
           </h1>
           <p className="text-lg text-secondary-white font-lato italic rounded-md">
-            Published by -<span className="font-bold">{userData?.name}</span>
+            Published by -<span className="font-bold">{blog?.author}</span>
           </p>
         </div>
         <div className="browser-css text-slate-300">{parse(blog?.content)}</div>
