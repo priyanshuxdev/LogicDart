@@ -36,6 +36,22 @@ LogicDart is a blog website built to provide a sleek and efficient platform for 
 - **TinyMCE:** Real-time rich text editor for creating and editing blog content.
 - **React Hook Form:** Library for managing form state and validation.
 
+## Screenshots
+
+Here are some screenshots of LogicDart in action:
+
+### Home Page
+
+![Home Page](./public/screenshots/1.png)
+
+### Blog List
+
+![Blog List](./public/screenshots/2.png)
+
+### Write a Blog
+
+![Write a Blog](./public/screenshots/3.png)
+
 ## Installation
 
 To run LogicDart locally, follow these steps:
