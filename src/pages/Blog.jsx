@@ -6,42 +6,72 @@ import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 import { CiMenuKebab } from "react-icons/ci";
 import "ldrs/spiral";
+import toast, { Toaster } from "react-hot-toast";
 
 export const Blog = () => {
+  const userData = useSelector((state) => state.auth.userData);
+
   const [blog, setBlog] = useState(null);
   const [options, setOptions] = useState(false);
+  const [isAuthor, setIsAuthor] = useState(false);
   const { slug } = useParams();
   const navigate = useNavigate();
-  // console.log("slug", slug, blog?.userId);
-  // console.log(blog);
 
-  const userData = useSelector((state) => state.auth.userData);
-  // console.log(userData);
-  const isAuthor = blog && userData ? blog?.userId === userData?.$id : false;
-  // console.log("userId", blog, userData);
+  // console.log("userid", blog.userId);
+
+  useEffect(() => {
+    if (userData && blog) {
+      setIsAuthor(blog?.userId === userData?.$id);
+    }
+  }, [userData, blog]);
 
   useEffect(() => {
     if (slug) {
-      dbService.getBlogPost(slug).then((blog) => {
-        if (blog) {
-          // console.log(blog);
-          setBlog(blog);
-        } else navigate("/"); //404 page
-      });
-    } else navigate("/"); //404 page
+      dbService
+        .getBlogPost(slug)
+        .then((blog) => {
+          if (blog) {
+            setBlog(blog);
+          } else {
+            toast.error("Blog post not found");
+            navigate("/all-blog");
+          } //404 page
+        })
+        .catch((error) => {
+          console.error("Error fetching blog post:", error);
+          navigate("/all-blog");
+        });
+    } else {
+      console.error("Slug not provided");
+      navigate("/");
+    } //404 page
   }, [slug, navigate]);
 
   const deleteBlogPost = () => {
-    dbService.deleteBlogPost(blog.$id).then((status) => {
-      if (status) {
-        dbService.deleteFile(blog.featuredImage);
-        navigate("/all-blog");
-      }
-    });
+    if (blog && blog.$id) {
+      dbService
+        .deleteBlogPost(blog.$id)
+        .then((status) => {
+          if (status) {
+            dbService
+              .deleteFile(blog.featuredImage)
+              .then(() => {
+                navigate("/all-blog");
+              })
+              .catch((error) => {
+                console.error("Error deleting featured image:", error);
+              });
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting blog post:", error);
+        });
+    }
   };
 
-  return blog ? (
+  return blog && userData ? (
     <div className="py-8">
+      <Toaster position="top-center" />
       <Container>
         <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
           <img
