@@ -22,9 +22,11 @@ export const Login = () => {
       const session = await authService.login(data);
       if (session) {
         const userData = await authService.getCurrentUser();
-        if (userData) dispatch(authLogin(userData));
-        toast.success("Logged in successfully");
-        navigate("/");
+        if (userData) {
+          dispatch(authLogin(userData));
+          toast.success("Logged in successfully");
+          navigate("/");
+        } else toast.error("Invalid username or password");
       }
     } catch (error) {
       toast.error(error.message);
