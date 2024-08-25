@@ -5,7 +5,7 @@ import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 import { CiMenuKebab } from "react-icons/ci";
-import "ldrs/spiral";
+import "ldrs/bouncy";
 import toast, { Toaster } from "react-hot-toast";
 
 export const Blog = () => {
@@ -116,7 +116,7 @@ export const Blog = () => {
     </div>
   ) : (
     <div className="flex align-center justify-center mt-32">
-      <l-spiral color="white" speed="0.9" size="60"></l-spiral>
+      <l-bouncy color="white" speed="0.9" size="60"></l-bouncy>
     </div>
   );
 };
