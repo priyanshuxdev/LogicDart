@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BlogCard, Container } from "../components";
 import { dbService } from "../appwrite/dbService";
-import "ldrs/spiral";
-
+import "ldrs/bouncy";
 export const AllBlog = () => {
   const [blogs, setBlogs] = useState([]);
 
@@ -19,7 +18,7 @@ export const AllBlog = () => {
       <Container>
         {blogs.length === 0 ? (
           <div className="flex justify-center align-center mt-32">
-            <l-spiral color="white" speed="0.9" size="60"></l-spiral>
+            <l-bouncy color="white" speed="0.9" size="60"></l-bouncy>
           </div>
         ) : (
           <div className="max-w-7xl mx-auto px-5 sm:px-6">
